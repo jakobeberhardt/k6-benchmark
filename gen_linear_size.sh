@@ -17,10 +17,10 @@ if [ -z $TARGET ]; then
 fi
 
 gen() {
-    FILE=$1
-    SIZE=$2
-    < /dev/urandom tr -dc "[:space:][:print:]" | head -c$SIZE > $FILE
-    echo "Generated file $FILE"
+  FILE=$1
+   SIZE=$2
+   < /dev/urandom tr -dc "[:space:][:print:]" | head -c$SIZE > $FILE
+   echo "Generated file $FILE"
 }
 
 gen "$TARGET/0" $FROM
@@ -28,8 +28,8 @@ gen "$TARGET/0" $FROM
 i=1
 while [ $i -le $(($(($TO - $FROM))/$STEP)) ]
 do 
-    gen $TARGET/$i $(($STEP*$i))
-    ((i++))
+   gen $TARGET/$i $(($STEP*$i))
+   ((i++))
 done
 
 gen $TARGET/$i $TO

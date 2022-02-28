@@ -1,36 +1,126 @@
-import http from "k6/http";
-import { Counter } from 'k6/metrics';
+import http from 'k6/http';
 import { check } from "k6";
 import { Rate } from "k6/metrics";
 
-
 const server="188.184.97.184";
 
-// Maximum amount of virtual users
-const max=10;
 
-// File name range
-const first=0;
-const last=600;
-
-// Ramping
 export const options = {
-    stages: [
-      { duration: '10s', target: max },
-      { duration: '30s', target: max },
-      { duration: '10s', target: 0 },
-    ],
-  };
+  scenarios: {
+    tiny: {
+      executor: 'ramping-vus',
+      startVUs: 0,
+      stages: [
+        { duration: '30s', target: 1000 },
+        { duration: '10s', target: 1000 },
+        { duration: '30s', target: 0 },
+      ],
+      gracefulStop: '30s',
+      exec: 'tiny', 
+    },
+    small: {
+      executor: 'ramping-vus',
+      startVUs: 0,
+      startTime: '100s',
+      stages: [
+        { duration: '30s', target: 1000 },
+        { duration: '10s', target: 1000 },
+        { duration: '30s', target: 0 },
+      ],
+      gracefulStop: '30s',
+      exec: 'small', 
+    },
+    medium: {
+      executor: 'ramping-vus',
+      startVUs: 0,
+      startTime: '200s',
+      stages: [
+        { duration: '30s', target: 1000 },
+        { duration: '10s', target: 1000 },
+        { duration: '30s', target: 0 },
+      ],
+      gracefulStop: '30s',
+      exec: 'medium', 
+    },
+    large: {
+      executor: 'ramping-vus',
+      startVUs: 0,
+      startTime: '300s',
+      stages: [
+        { duration: '30s', target: 1000 },
+        { duration: '10s', target: 1000 },
+        { duration: '30s', target: 0 },
+      ],
+      gracefulStop: '30s',
+      exec: 'large', 
+    },
+    extra: {
+      executor: 'ramping-vus',
+      startVUs: 0,
+      startTime: '400s',
+      stages: [
+        { duration: '30s', target: 1000 },
+        { duration: '10s', target: 1000 },
+        { duration: '30s', target: 0 },
+      ],
+      gracefulStop: '30s',
+      exec: 'extra', 
+    },
+    
+    
+  },
+  discardResponseBodies: true,
+  noThresholds: true,
+};
 
 export let errorRate = new Rate("errors");
 
-// Picks a random file and gets it
-export default function() {
-     const num = Math.floor(Math.random() * (last - first) ) + first;
-     let res = http.get("http://"+server+"/"+num);  
-     console.log("GET"+" /"+num+" ("+res.status+")")
-     let success = check(res, {"is status 200": (r) => r.status === 200});
-     if (!success) {
-      errorRate.add(1)
-     }
+export function tiny() {
+  const num = Math.floor(Math.random() * (99999 - 0) ) + 0;
+  let res = http.get("http://"+server+"/tiny/"+num);  
+  console.log("GET"+" /tiny/"+num+" ("+res.status+")")
+  let success = check(res, {"is status 200": (r) => r.status === 200});
+  if (!success) {
+   errorRate.add(1)
+  }
+};
+
+export function small() {
+  const num = Math.floor(Math.random() * (9999 - 0) ) + 0;
+  let res = http.get("http://"+server+"/small/"+num);  
+  console.log("GET"+" /small/"+num+" ("+res.status+")")
+  let success = check(res, {"is status 200": (r) => r.status === 200});
+  if (!success) {
+   errorRate.add(1)
+  }
+};
+
+export function medium() {
+  const num = Math.floor(Math.random() * (999 - 0) ) + 0;
+  let res = http.get("http://"+server+"/medium/"+num);  
+  console.log("GET"+" /medium/"+num+" ("+res.status+")")
+  let success = check(res, {"is status 200": (r) => r.status === 200});
+  if (!success) {
+   errorRate.add(1)
+  }
+};
+
+export function large() {
+  const num = Math.floor(Math.random() * (99 - 0) ) + 0;
+  let res = http.get("http://"+server+"/large/"+num);  
+  console.log("GET"+" /large/"+num+" ("+res.status+")")
+  let success = check(res, {"is status 200": (r) => r.status === 200});
+  if (!success) {
+   errorRate.add(1)
+  }
+};
+
+export function extra() {
+  const num = Math.floor(Math.random() * (3 - 0) ) + 0;
+  let res = http.get("http://"+server+"/extra/"+num);  
+  console.log("GET"+" /extra/"+num+" ("+res.status+")")
+  let success = check(res, {"is status 200": (r) => r.status === 200});
+  if (!success) {
+   errorRate.add(1)
+  }
 };
