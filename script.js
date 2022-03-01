@@ -59,8 +59,8 @@ export const options = {
       startVUs: 0,
       startTime: '400s',
       stages: [
-        { duration: '30s', target: 1000 },
-        { duration: '10s', target: 1000 },
+        { duration: '30s', target: 100 },
+        { duration: '10s', target: 100 },
         { duration: '30s', target: 0 },
       ],
       gracefulStop: '30s',
