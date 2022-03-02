@@ -2,10 +2,15 @@ import http from 'k6/http';
 import { check } from "k6";
 import { Rate } from "k6/metrics";
 
-const server="188.184.97.184";
+// IP of HTTP server to be benchmarked
+const server="X.X.X.X";
 
 
 export const options = {
+  // One scenario for each file size
+  // Starting from 0 VUs, ramping up to 1000 over the term of 30s
+  // Stay at 1000 VUs for 10s, then ramp down to 0 in 30s
+  // Grant 30s of gracefulStop time
   scenarios: {
     tiny: {
       executor: 'ramping-vus',
@@ -69,12 +74,15 @@ export const options = {
     
     
   },
+  // This option allows for more VUs at low memory
   discardResponseBodies: true,
+  // Sets HTTP timeout to 60s
   noThresholds: true,
 };
 
 export let errorRate = new Rate("errors");
 
+// Picks a random file from the tiny directory and GETs it
 export function tiny() {
   const num = Math.floor(Math.random() * (99999 - 0) ) + 0;
   let res = http.get("http://"+server+"/tiny/"+num);  

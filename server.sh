@@ -1,4 +1,4 @@
-# Server Setup
+# Instructions for setting up a httpd server on CentOS 8
 sudo dnf install http
 systemctl start httpd
 sudo systemctl enable httpd
