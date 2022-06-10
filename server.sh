@@ -1,16 +1,15 @@
 # Instructions for setting up a httpd server on CentOS 8
-sudo dnf install http
+dnf install http
 systemctl start httpd
-sudo systemctl enable httpd
-sudo yum install net-tools
+systemctl enable httpd
+dnf install net-tools
 systemctl start firewalld
 systemctl enable firewalld
 firewall-cmd --add-service=http
 firewall-cmd --add-service=https
-chcon -R --reference=/var/www/html /std-volume
-chgrp -R apache /std-volume
-chmod -R g+r /std-volume
-# DocumentRoot --> /std-volume
+chcon -R --reference=/var/www/html ./files
+chgrp -R apache ./files
+chmod -R g+r ./files
+# DocumentRoot --> ./files
 nano /etc/httpd/conf/httpd.conf 
 systemctl restart httpd
-sudo yum install iotop
