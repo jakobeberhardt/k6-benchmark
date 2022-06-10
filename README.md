@@ -1,29 +1,27 @@
 # HTTP benchmarking using k6
-
 This repository provides:
-- Setup instructions for an HTTP benchmarking environment and result visualization using **k6** and **Grafana**.
+- Setup instructions for an HTTP benchmarking environment and result visualization using [k6](https://k6.io/docs/) and [Grafana](https://grafana.com/).
 - Scripts to generate suitable test data. 
 - Configurable k6 script including different load scenarios.
 - Predefined Grafana dashboard for load and result visualization.  
 
-## Generate test files of different sizes on designated HTTP server (Total of 16 GB)
-    bash gen.sh 100000 40 ./tiny && \
-    bash gen.sh 10000 400 ./small && \
-    bash gen.sh 1000 4000 ./medium && \
-    bash gen.sh 100 40000 ./large && \
-    bash gen.sh 10 200000 ./extra 
-    chgrp -R apache /data && \
-    chmod -R g+r /data
+## Generate test files on designated HTTP server
+    # 30000 files with 500KB
+    bash gen.sh 30000 500 ./files
+    chgrp -R apache ./files
+    chmod -R g+r ./files
 ---
-## Run simple a HTTP benchmark with console output
+## Run a simple HTTP benchmark with console output
+    # Add target ip to script.js
     k6 run script.js
 
 ---
-## Dedicated Grafana Dashboard
+## Grafana Dashboard
 
 In case you want to set up a local InfluxDB and or a local Grafana server, follow the instructions in **client.sh**. Import the Dashboard to visualize key metrics like errors per second, the amount of concurrent requests or the median request response time. Go to:
     
-    Create --> Import --> Upload dashboard.json or enter the Dashboard ID 2587 -> Select InfluxDB as the data source
+    Create --> Import --> Upload dashboard.json -> Select InfluxDB as the data source
 
-## Run a HTTP benchmark and write output to local InfluxDB 
+## Run an HTTP benchmark and write output to local InfluxDB 
+    # Add target ip to script.js
     k6 run --out influxdb=http://localhost:8086/mydb script.js 
