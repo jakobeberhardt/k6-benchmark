@@ -8,7 +8,7 @@ TARGET=$3
 gen() {
   FILE=$1
   SIZE=$2
-   < /dev/urandom tr -dc "[:space:][:print:]" | head -c$SIZE > $FILE
+   < /dev/urandom tr -dc "[:space:][:print:]" | head -c $SIZE > $FILE
    echo "Generated file $FILE"
 }
 
